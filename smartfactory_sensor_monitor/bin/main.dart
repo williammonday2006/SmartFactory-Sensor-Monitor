@@ -22,17 +22,36 @@ Future<void> main() async {
 
   final controller = StreamController<double>();
 
-  controller.stream.listen((reading) {
-    if (reading > 35.0) {
-      double fahrenheit = reading * 1.8 + 32;
-      print("WARNING: ${reading}°C / ${fahrenheit}°F");
-    } else {
-      print("Normal temperature: ${reading}°C");
-    }
-  });
+  controller.stream.listen(
+    (reading) {
+      if (reading > 35.0) {
+        double fahrenheit = reading * 1.8 + 32;
+        print("WARNING: ${reading}°C / ${fahrenheit}°F");
+      } else {
+        print("Normal temperature: ${reading}°C");
+      }
+    },
+    onError: (error) {
+      print("ALERT: Pipeline caught an error -> $error");
+    },
+    onDone: () {
+      print("Sensor pipeline closed.");
+    },
+    cancelOnError: false,
+  );
+
+  int counter = 0;
 
   await for (final reading in temperatureStream()) {
-    controller.add(reading);
+    counter++;
+
+    if (counter == 4) {
+      controller.addError(
+        Exception('Sensor Malfunction: Signal Lost'),
+      );
+    } else {
+      controller.add(reading);
+    }
   }
 
   await controller.close();

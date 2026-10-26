@@ -9,3 +9,7 @@ I created an async stream that yields five temperature readings over time. The a
 # Phase 3
 
 I added a StreamController to receive and distribute temperature readings. I registered the listener before sending readings so every event could be processed as it arrived. I closed the controller after dispatching all readings.
+
+# Phase 4
+
+I used addError() to simulate a sensor malfunction. The onError callback reports the error without stopping the stream, allowing later readings to be processed. Unlike try-catch, onError handles errors delivered through a stream.
