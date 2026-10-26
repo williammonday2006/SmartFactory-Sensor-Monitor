@@ -13,3 +13,7 @@ I added a StreamController to receive and distribute temperature readings. I reg
 # Phase 4
 
 I used addError() to simulate a sensor malfunction. The onError callback reports the error without stopping the stream, allowing later readings to be processed. Unlike try-catch, onError handles errors delivered through a stream.
+
+# Phase 5
+
+I tested the complete program and checked that the readings, Fahrenheit conversions, and error handling worked correctly. The stream continued after the simulated error and closed cleanly without crashing.
